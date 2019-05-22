@@ -29,9 +29,8 @@ def create_perceptron(X, y):
     return clf
 
 
-
 def get_data(m):
-    X = numpy.random.multivariate_normal(mean, cov, m)
+    X = np.random.multivariate_normal(DATA_MEAN, DATA_COV, m)
     labeler_func = np.vectorize(determine_label)
     y = labeler_func(X)
 
@@ -42,8 +41,13 @@ def determine_label(x):
     return np.sign(np.inner(DATA_SEPERTOR, x) + DATA_SEPERTOR_FREE_VAR)
 
 
-def creat_hyperplane(w, b, points):
-    return - (DATA_SEPERTOR[0] * points + DATA_SEPERTOR_FREE_VAR) / DATA_SEPERTOR[1]
+def draw_hyperplane(w, b, plot_label):
+    points = np.linspace(PLOT_RANGE * -1, PLOT_RANGE, 1000)
+    a = - w[0] / w[1]
+    b = b / w[1]
+    values = a * points - b
+
+    plt.plot(points, values, label=plot_label)
 
 
 
@@ -54,14 +58,13 @@ def q4():
     for m in SAMPLE_SIZES:
 
         X, y = get_data(m)
-        svm_clf = create_svm(X, y)
         perceptron_clf = create_perceptron(X, y)
 
         # draw data
         plt.scatter(X[:,0], X[:,1])
 
-        one_dim_points = np.linspace(PLOT_RANGE * -1, PLOT_RANGE, 1000)
-        points = np.vstack((one_dim_points, one_dim_points))
+        draw_hyperplane(DATA_SEPERTOR, DATA_SEPERTOR_FREE_VAR, "True Hypothesis")
 
-        # draw true hypotesis
-        true_hyp = creat_hyperplane(DATA_SEPERTOR, DATA_SEPERTOR_FREE_VAR, points)
+        svm_clf = create_svm(X, y)
+        svm_clf.predict()
+#         plottttttttttt
