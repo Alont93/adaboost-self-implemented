@@ -1,6 +1,4 @@
 import numpy as np
-from theano.gof.tests.test_destroyhandler import add_in_place
-
 
 class perceptron:
 
