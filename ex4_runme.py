@@ -13,9 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from ex4.ex4_tools import DecisionStump, decision_boundaries, generate_data, load_images
 from ex4.adaboost import AdaBoost
-from ex4.face_detection import integral_image, WeakImageClassifier
 
-from ex4.svm_perception_comperer import q4, q5
+import ex4.svm_perception_comperer as comperer
 
 TRAIN_SET_SIZE = 5000
 TEST_SET_SIZE = 200
@@ -28,7 +27,6 @@ adaboost_clf = AdaBoost(DecisionStump, T)
 D = adaboost_clf.train(X_train, y_train)
 
 T_TO_PLOT = np.array([5, 10, 50, 100, 200, 500])
-NOISES = [0.1, 0.4]
 
 def get_errors(X, y):
     errors = []
@@ -40,15 +38,17 @@ def get_errors(X, y):
 train_error = get_errors(X_train, y_train)
 test_error = get_errors(X_test, y_test)
 
+NOISES = [0.1, 0.4]
+
 
 def Q4():
-    q4()
+    comperer.q4()
 
 
 def Q5():
-    q5()
+    comperer.q5()
 
-# TODO: check weired graph
+
 def Q8():
     all_t = np.arange(1, T+1)
     plt.plot(all_t, train_error, label="train set error")
@@ -83,6 +83,23 @@ def Q11():
 
 def Q12():
     for n in NOISES:
+        # globals not global
+        X_train, y_train = generate_data(TRAIN_SET_SIZE, n)
+        X_test, y_test = generate_data(TEST_SET_SIZE, n)
+        adaboost_clf = AdaBoost(DecisionStump, T)
+        D = adaboost_clf.train(X_train, y_train)
+
+        def get_errors(X, y):
+            errors = []
+            for t in range(1,T+1):
+                errors.append(adaboost_clf.error(X, y, t))
+            return np.array(errors)
+
+
+        train_error = get_errors(X_train, y_train)
+        test_error = get_errors(X_test, y_test)
+
+
         # def Q8():
         all_t = np.arange(1, T + 1)
         plt.plot(all_t, train_error, label="train set error")
@@ -113,6 +130,8 @@ def Q12():
         plt.show()
 
 
+
+
 def Q17():
     'TODO complete this function'
 
@@ -122,5 +141,4 @@ def Q18():
 
 
 if __name__ == '__main__':
-    Q4()
-    Q5()
+    Q12()

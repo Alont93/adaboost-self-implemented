@@ -123,6 +123,3 @@ def draw_data_with_two_classes(m):
             no_two_classes_exists = False
 
     return X, y
-
-
-q5()
