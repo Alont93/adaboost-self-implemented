@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.svm import SVC
 
-from ex4 import perceptron
+import perceptron
 
 SVM_C = 10 * (10**10)
 DATA_MEAN = np.zeros(2)
